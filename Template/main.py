@@ -5,7 +5,8 @@ import tensorflow as tf
 import horovod.tensorflow as hvd
 import sys
 
-from keras.layers import Input, Model
+from keras.layers import Input
+from keras.models import Model
 from keras.callbacks import TensorBoard
 from keras.optimizers import SGD, Adam
 from datetime import datetime
