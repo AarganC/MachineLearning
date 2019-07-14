@@ -3,6 +3,7 @@ import os
 import numpy as np
 import tensorflow as tf
 import horovod.tensorflow as hvd
+import math
 import sys
 
 from keras.layers import Input
@@ -47,6 +48,9 @@ if __name__ == "__main__":
     config.gpu_options.visible_device_list = str(hvd.local_rank())
     keras.set_session(tf.Session(config=config))
 
+    # Horovod: adjust number of epochs based on number of GPUs.
+    epochs = int(math.ceil(float(epochs) / hvd.size()))
+
     # Loading data in ram
     train_input1 = np.load("../Data/train-input_1.npy")
     train_input2 = np.load("../Data/train-input_2.npy")
@@ -64,7 +68,7 @@ if __name__ == "__main__":
     ## Modele
     if name_modele == "LSTM":
         print(name_modele + " " + name_param)
-        main_output, auxiliary_output = LSTM(input_1, input_2, nb_filtre, nb_layer, nb_dropout_flag, nb_dropout_value)
+        main_output, auxiliary_output = LSTM(input_1, input_2, nb_filtre, nb_layer)
     if name_modele == "MLP":
         print(name_modele + " " + name_param)
         main_output, auxiliary_output = MLP(input_1, input_2, activation, nb_layer, nb_filtre)
