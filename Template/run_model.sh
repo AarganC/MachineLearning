@@ -8,7 +8,7 @@ do
    echo "<-------------------------------- $test_name --------------------------------->\n"
    echo "<----------------------------------------------------------------------------->\n"
    nvidia-smi
-   python3 Template_Final.py $test_name $model $bash_size $epoch $activation $layer $nb_filtre
+   horovodrun -np 4 -H localhost:4 python3 Template_Final.py $test_name $model $bash_size $epoch $activation $layer $nb_filtre
    sleep 60
    echo "<----------------------------------------------------------------------------->"
    echo "<------------------------------------ FIN ------------------------------------>"
