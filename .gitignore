@@ -21,4 +21,5 @@ Utilities/
 .viminfo
 Anaconda/*
 Origin_Data/*
+Template/__pycache__/
 
