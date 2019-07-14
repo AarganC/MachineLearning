@@ -54,10 +54,10 @@ if __name__ == "__main__":
     epochs = int(math.ceil(float(epochs) / hvd.size()))
 
     # Loading data in ram
-    train_input1 = np.load("../Data/train-input_1.npy")
-    train_input2 = np.load("../Data/train-input_2.npy")
-    train_output1 = np.load("../Data/train-output_1.npy")
-    train_output2 = np.load("../Data/train-output_2.npy")
+    train_input1 = np.load("../Data/train-input_1" + hvd.rank() + 1 + ".npy")
+    train_input2 = np.load("../Data/train-input_2" + hvd.rank() + 1 + ".npy")
+    train_output1 = np.load("../Data/train-output_1" + hvd.rank() + 1 + ".npy")
+    train_output2 = np.load("../Data/train-output_2" + hvd.rank() + 1 + ".npy")
     validation_input_1 = np.load("../Data/validation-input_1.npy")
     validation_input_2 = np.load("../Data/validation-input_2.npy")
     validation_output_1 = np.load("../Data/validation-output_1.npy")
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     opt = hvd.DistributedOptimizer(opt)
 
     model.compile(optimizer=opt,
-                  loss={'output_1': 'binary_crossentropy', 'output_2': 'binary_crossentropy'},
+                  loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'},
                   loss_weights={'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'])
 
     save_dir = os.path.join(os.getcwd(), 'res_logs')
