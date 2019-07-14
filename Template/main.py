@@ -9,11 +9,13 @@ import sys
 from keras.layers import Input
 from keras.models import Model
 from keras.callbacks import TensorBoard
+from keras import backend as K
 from keras.optimizers import SGD, Adam
 from datetime import datetime
 from SLP import SLP
 from MLP import MLP
 from LSTM import LSTM
+
 
 
 if __name__ == "__main__":
@@ -46,7 +48,7 @@ if __name__ == "__main__":
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     config.gpu_options.visible_device_list = str(hvd.local_rank())
-    keras.set_session(tf.Session(config=config))
+    K.set_session(tf.Session(config=config))
 
     # Horovod: adjust number of epochs based on number of GPUs.
     epochs = int(math.ceil(float(epochs) / hvd.size()))
