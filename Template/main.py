@@ -7,6 +7,7 @@ import sys
 
 from keras.layers import Input, Model
 from keras.callbacks import TensorBoard
+from keras.optimizers import SGD, Adam
 from datetime import datetime
 from SLP import SLP
 from MLP import MLP
@@ -30,6 +31,8 @@ if __name__ == "__main__":
     print("nb_layer = " + nb_layer)
     nb_filtre = sys.argv[7]
     print("nb_filtre = " + nb_filtre)
+    final_activation = sys.argv[8]
+    print("final_activation = " + final_activation)
 
     # GPU config
     # Initialize Horovod
@@ -71,7 +74,7 @@ if __name__ == "__main__":
     ## Run model
     model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output])
 
-    model.compile(optimizer='rmsprop',
+    model.compile(optimizer=final_activation,
                   loss={'output_1': 'binary_crossentropy', 'output_2': 'binary_crossentropy'},
                   loss_weights={'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'])
 
