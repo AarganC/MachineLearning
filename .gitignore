@@ -22,4 +22,16 @@ Utilities/
 Anaconda/*
 Origin_Data/*
 Template/__pycache__/
+core
+Jihed/res_logs
+screenlog.0
+Aargan/screenlog.0
+Jihed/.ipynb_checkpoints/*
+Aargan/.ipynb_checkpoints/*
+Jihed/.ipynb_checkpoints/SLP-checkpoint.ipynb
+Aargan/res_logs
+.vim/
+Data_split/
+
+
 

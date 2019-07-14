@@ -14,3 +14,4 @@ do
    echo "<------------------------------------ FIN ------------------------------------>"
    echo "<----------------------------------------------------------------------------->"
 done < ../Hyperparam/file_test.csv
+#gcloud compute instances stop instance-2 -q --zone europe-west4-a
