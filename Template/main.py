@@ -34,6 +34,8 @@ if __name__ == "__main__":
     print("nb_filtre = " + nb_filtre)
     final_activation = sys.argv[8]
     print("final_activation = " + final_activation)
+    lera = sys.argv[8]
+    print("lera = " + lera)
 
     # GPU config
     # Initialize Horovod
@@ -75,12 +77,12 @@ if __name__ == "__main__":
     ## Run model
     model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output])
 
-    model.compile(optimizer=final_activation,
+    opt = str(final_activation+'(float('+lera+'))')
+    opt = hvd.DistributedOptimizer(opt)
+
+    model.compile(optimizer=opt,
                   loss={'output_1': 'binary_crossentropy', 'output_2': 'binary_crossentropy'},
                   loss_weights={'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'])
-
-    cb = []
-    modelCheckPointCallBack = keras.callbacks.ModelCheckpoint('./checkpoint-{epoch}.h5')
 
     save_dir = os.path.join(os.getcwd(), 'res_logs')
     date = datetime.today()
@@ -94,16 +96,19 @@ if __name__ == "__main__":
     if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
     filepath = os.path.join(save_dir, model_name)
-    callbacks = TensorBoard(log_dir=filepath)
-    cb.append(callbacks)
-    cb.append(modelCheckPointCallBack)
 
-    nbatches_train, mod = divmod(len(train_input1)+len(train_input2),
-                                 batch_size)
-    nbatches_valid, mod = divmod(len(validation_input_1)+len(validation_input_2),
-                                 batch_size)
+    callbacks = [
+        # Horovod: broadcast initial variable states from rank 0 to all other processes.
+        # This is necessary to ensure consistent initialization of all workers when
+        # training is started with random weights or restored from a checkpoint.
+        hvd.callbacks.BroadcastGlobalVariablesCallback(0),
+    ]
 
-    model.fit_generator([train_input1, train_input2], [train_output1, train_output2], epochs=epochs,
-                        batch_size=batch_size, callbacks=[callbacks], steps_per_epoch=nbatches_train,
-                        validation_steps=3 * nbatches_valid,
-                        validation_data=([validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
+    if hvd.rank() == 0:
+        callbacks.append(keras.callbacks.ModelCheckpoint('./checkpoint-{epoch}.h5'))
+        callbacks.append(TensorBoard(log_dir=filepath))
+
+    model.fit([train_input1, train_input2],
+              [train_output1, train_output2],
+              epochs=10, batch_size=4096, callbacks=[callbacks],
+              validation_data=([validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
