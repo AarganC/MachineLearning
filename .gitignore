@@ -2,4 +2,23 @@
 .idea/
 Data/
 Driver/
+Utilities/
+.bash_history
+.bash_logout
+.bashrc
+.cache/
+.conda/
+.config/
+.gitconfig
+.horovod/
+.ipython/
+.jupyter/
+.keras/
+.local/
+.profile
+.python_history
+.ssh/
+.viminfo
+Anaconda/*
+Origin_Data/*
 
