@@ -14,7 +14,7 @@ def LSTM (input_1, input_2, nb_filtre, nb_layer):
     H = Embedding(10000, nb_filtre, input_length=(884,))(input_1)
     for i in range(int(nb_layer)):
         # Layer 1
-        C = Embedding(10000, nb_filtre_b, input_length=(260,))(input_1)
+        C = Embedding(10000, nb_filtre_b, input_length=(884,))(input_1)
 
         Hx = concatenate([H, H])
         F = Activation('sigmoid')(Hx)
