@@ -88,8 +88,6 @@ input_2_shape = 260,
 
 input_1 = Input(shape=(884,), name="intput_1")
 input_2 = Input(shape=(260,), name="intput_2")
-output_1 = Dense(260, activation='softmax', name="output_1")(input_1 )
-output_2 = Dense(1, activation='sigmoid', name="output_2")(input_2)
 
 
 # In[ ]:
@@ -106,8 +104,6 @@ lera=0.01
 inputs_1 = input_1
 inputs_2 = input_2
 concat= concatenate([input_1, input_2])
-#y=Dense(n, activation=act)(inputs_1)
-#x=Dense(n, activation=act)(inputs_2)
 
 #x=Dense(n, activation=act)(x)
 concat=Dense(n, activation=act)(concat)
