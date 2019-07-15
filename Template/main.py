@@ -58,10 +58,10 @@ if __name__ == "__main__":
     train_input2 = np.load("../Data_split/train-input_2-" + str(hvd.rank()) + ".npy")
     train_output1 = np.load("../Data_split/train-output_1-" + str(hvd.rank()) + ".npy")
     train_output2 = np.load("../Data_split/train-output_2-" + str(hvd.rank()) + ".npy")
-    validation_input_1 = np.load("../Data/validation-input_1-" + str(hvd.rank()) + ".npy")
-    validation_input_2 = np.load("../Data/validation-input_2-" + str(hvd.rank()) + ".npy")
-    validation_output_1 = np.load("../Data/validation-output_1-" + str(hvd.rank()) + ".npy")
-    validation_output_2 = np.load("../Data/validation-output_2-" + str(hvd.rank()) + ".npy")
+    validation_input_1 = np.load("../Data_split/validation-input_1-" + str(hvd.rank()) + ".npy")
+    validation_input_2 = np.load("../Data_split/validation-input_2-" + str(hvd.rank()) + ".npy")
+    validation_output_1 = np.load("../Data_split/validation-output_1-" + str(hvd.rank()) + ".npy")
+    validation_output_2 = np.load("../Data_split/validation-output_2-" + str(hvd.rank()) + ".npy")
 
     # Set tensor
     input_1 = Input(shape=(884,), name="input_1")
