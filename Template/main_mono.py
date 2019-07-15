@@ -65,7 +65,6 @@ if __name__ == "__main__":
         main_output, auxiliary_output = LSTM(input_1, input_2, nb_filtre, nb_layer)
     if name_modele == "MLP":
 
-        #print(name_modele + " " + name_param)
         concat = concatenate([input_1, input_2])
 
         for i in range(nb_layer):
