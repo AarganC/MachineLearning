@@ -165,7 +165,7 @@ model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output]
 
 
 model.compile(optimizer='rmsprop',
-              loss={'output_1': 'binary_crossentropy', 'output_2': 'binary_crossentropy'},
+              loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'},
               loss_weights={'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'])
 
 save_dir = os.path.join(os.getcwd(), 'res_logs')
