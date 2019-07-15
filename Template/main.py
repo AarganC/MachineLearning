@@ -64,8 +64,8 @@ if __name__ == "__main__":
     validation_output_2 = np.load("../Data/validation-output_2.npy")
 
     # Set tensor
-    input_1 = Input(shape=(884,), name="intput_1")
-    input_2 = Input(shape=(260,), name="intput_2")
+    input_1 = Input(shape=(884,), name="input_1")
+    input_2 = Input(shape=(260,), name="input_2")
 
     ## Modele
     if name_modele == "LSTM":
