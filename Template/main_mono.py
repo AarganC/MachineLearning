@@ -5,7 +5,7 @@ import tensorflow as tf
 import math
 import sys
 
-from keras.layers import Input
+from keras.layers import Input, concatenate, Dense
 from keras.models import Model
 from keras.callbacks import TensorBoard
 from keras.optimizers import SGD, Adam
@@ -65,10 +65,19 @@ if __name__ == "__main__":
         main_output, auxiliary_output = LSTM(input_1, input_2, nb_filtre, nb_layer)
     if name_modele == "MLP":
         #print(name_modele + " " + name_param)
-        main_output, auxiliary_output = MLP(input_1, input_2, activation, nb_layer, nb_filtre)
+        concat = concatenate([input_1, input_2])
+
+        for i in range(nb_layer):
+            concat = Dense(nb_filtre, activation=activation)(concat)
+
+        auxiliary_output = Dense(1, activation='sigmoid', name="output_2")(concat)
+        main_output = Dense(260, activation='softmax', name="output_1")(concat)
     if name_modele == "SLP":
-        #print(name_modele + " " + name_param)
-        main_output, auxiliary_output = SLP(input_1, input_2, activation, nb_filtre)
+        concat = concatenate([input_1, input_2])
+        x = Dense(nb_filtre, activation=activation)(concat)
+
+        main_output = Dense(260, activation='softmax', name="output_1")(x)
+        auxiliary_output = Dense(1, activation='sigmoid', name="output_2")(x)
     else:
         exit(1)
 
