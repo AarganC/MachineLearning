@@ -10,6 +10,8 @@ from keras.models import Model
 from keras.callbacks import TensorBoard
 from keras.optimizers import SGD, Adam
 from datetime import datetime
+from tensorflow.python.keras.utils import multi_gpu_model
+from keras.applications import Xception
 from SLP import SLP
 from MLP import MLP
 from LSTM import LSTM
@@ -75,9 +77,11 @@ if __name__ == "__main__":
 
     opt = str(final_activation+'(float('+lera+'))')
 
-    model.compile(optimizer=opt,
-                  loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'},
-                  loss_weights={'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'])
+    # Replicates the model on 8 GPUs.
+    # This assumes that your machine has 8 available GPUs.
+    parallel_model = multi_gpu_model(model, gpus=4)
+    parallel_model.compile(loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'},
+                           loss_weights={'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'], optimizer='opt')
 
     save_dir = os.path.join(os.getcwd(), 'res_logs')
     date = datetime.today()
@@ -93,7 +97,6 @@ if __name__ == "__main__":
     filepath = os.path.join(save_dir, model_name)
     callbacks = TensorBoard(log_dir=filepath)
 
-    model.fit([train_input1, train_input2],
-              [train_output1, train_output2],
-              epochs=10, batch_size=4096, callbacks=[callbacks],
-              validation_data=([validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
+    parallel_model.fit([train_input1, train_input2], [train_output1, train_output2], epochs=10, batch_size=4096,
+                       callbacks=[callbacks], validation_data=([validation_input_1, validation_input_2],
+                                                               [validation_output_1, validation_output_2]))
