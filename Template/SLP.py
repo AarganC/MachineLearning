@@ -1,5 +1,4 @@
 from keras.layers import Dense, concatenate
-from keras.optimizers import SGD
 
 def SLP(input_1, input_2, act, n):
     concat = concatenate([input_1, input_2])
