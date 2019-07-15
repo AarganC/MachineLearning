@@ -43,9 +43,6 @@ if __name__ == "__main__":
     config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
 
-    # Horovod: adjust number of epochs based on number of GPUs.
-    epochs = int(math.ceil(float(epochs) / hvd.size()))
-
     # Loading data in ram
     train_input1 = np.load("../Data/train-input_1.npy")
     train_input2 = np.load("../Data/train-input_2.npy")
