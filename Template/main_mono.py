@@ -39,10 +39,6 @@ if __name__ == "__main__":
     print("lera = " + lera)
 
     # GPU config
-    # Initialize Horovod
-    hvd.init()
-
-    # Pin GPU to be used to process local rank (one GPU per process)
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
