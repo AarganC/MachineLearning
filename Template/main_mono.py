@@ -61,13 +61,13 @@ if __name__ == "__main__":
 
     ## Modele
     if name_modele == "LSTM":
-        print(name_modele + " " + name_param)
+        #print(name_modele + " " + name_param)
         main_output, auxiliary_output = LSTM(input_1, input_2, nb_filtre, nb_layer)
     if name_modele == "MLP":
-        print(name_modele + " " + name_param)
+        #print(name_modele + " " + name_param)
         main_output, auxiliary_output = MLP(input_1, input_2, activation, nb_layer, nb_filtre)
     if name_modele == "SLP":
-        print(name_modele + " " + name_param)
+        #print(name_modele + " " + name_param)
         main_output, auxiliary_output = SLP(input_1, input_2, activation, nb_filtre)
     else:
         exit(1)

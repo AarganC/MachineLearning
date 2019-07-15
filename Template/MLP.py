@@ -1,8 +1,8 @@
 from keras.layers import Dense, concatenate
 
 def MLP(input_1, input_2, act, nb_layer, n):
-    input_1 = int(input_1)
-    input_2 = int(input_2)
+    #input_1 = int(input_1)
+    #input_2 = int(input_2)
 
     concat = concatenate([input_1, input_2])
 
