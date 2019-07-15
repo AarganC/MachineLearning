@@ -2,14 +2,12 @@ import keras
 import os
 import numpy as np
 import tensorflow as tf
-import horovod.tensorflow as hvd
 import math
 import sys
 
 from keras.layers import Input
 from keras.models import Model
 from keras.callbacks import TensorBoard
-from keras import backend as K
 from keras.optimizers import SGD, Adam
 from datetime import datetime
 from SLP import SLP
