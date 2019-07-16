@@ -39,7 +39,7 @@ print("lera = " + lera)
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-config.gpu_options.per_process_gpu_memory_fraction = 0.2 
+#config.gpu_options.per_process_gpu_memory_fraction = 0.2 
 sess = tf.Session(config=config)
 
 train_input1 = np.load("../Data/train-input_1.npy")
