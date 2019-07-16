@@ -1,13 +1,8 @@
 #!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 
 import keras
 import os
 import sys
-import pandas as pd
 import numpy as np
 import tensorflow as tf
 from keras.optimizers import SGD
@@ -95,11 +90,16 @@ model_name = "{}{}{}{}{}_{}"     .format(year, month, day, hour, minute, name_pa
 if not os.path.isdir(save_dir):
     os.makedirs(save_dir)
 filepath = os.path.join(save_dir, model_name)
-callbacks = TensorBoard(log_dir=filepath)
+callbacks = []
+
+callbacks.append(TensorBoard(log_dir=filepath))
+callbacks.append(callbacks.append(keras.callbacks.ModelCheckpoint('./checkpoint-{epoch}.h5')))
 
 model.fit([train_input1, train_input2],
           [train_output1, train_output2],
-          epochs=30, batch_size=4096, callbacks=[callbacks],
+          epochs=10, batch_size=4096, callbacks=[callbacks],
          validation_data=([validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
+
+model.save('model_SLP.h5')
 
 

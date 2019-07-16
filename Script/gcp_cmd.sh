@@ -23,3 +23,8 @@ export PATH="/home/aargancointepas/Anaconda/anaconda3/bin:$PATH"
 source .bashrc
 source activate tensorflow
 jupyter-notebook --no-browser --port=5000  --ip=10.164.0.2
+http://34.90.87.249:5000/
+
+# Terminal
+TMUX
+I3
