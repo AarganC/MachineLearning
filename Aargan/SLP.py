@@ -90,6 +90,7 @@ model_name = "{}{}{}{}{}_{}"     .format(year, month, day, hour, minute, "SLP")
 if not os.path.isdir(save_dir):
     os.makedirs(save_dir)
 filepath = os.path.join(save_dir, model_name)
+#callbacks = TensorBoard(log_dir=filepath)
 callbacks = []
 
 callbacks.append(TensorBoard(log_dir=filepath))
