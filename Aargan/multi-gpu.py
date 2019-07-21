@@ -48,71 +48,84 @@ if __name__ == "__main__":
     input_1 = Input(shape=(884,), name="input_1")
     input_2 = Input(shape=(260,), name="input_2")
 
+    # Creates a graph.
+    c = []
+    for d in ['/device:GPU:2', '/device:GPU:3']:
+        with tf.device(d):
+            a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3])
+            b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2])
+            c.append(tf.matmul(a, b))
+    with tf.device('/cpu:0'):
+        sum = tf.add_n(c)
+    # Creates a session with log_device_placement set to True.
+    sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+    # Runs the op.
+    print(sess.run(sum))
 
-    mirrored_strategy = tf.distribute.MirroredStrategy()
-    with mirrored_strategy.scope():
-        nb_filtre = int(nb_filtre)
-        nb_filtre_b = nb_filtre * 2
+    # Runs the op.
+    print(sess.run(c))
 
-        x = input_1
+    nb_filtre = int(nb_filtre)
+    nb_filtre_b = nb_filtre * 2
 
-        print(nb_filtre)
-        print(nb_filtre_b)
+    x = input_1
 
-        C = Embedding(10000, nb_filtre_b, input_length=(884,))(x)
-        H = Embedding(10000, nb_filtre, input_length=(884,))(x)
+    print(nb_filtre)
+    print(nb_filtre_b)
 
-        for i in range(int(nb_layer)):
+    C = Embedding(10000, nb_filtre_b, input_length=(884,))(x)
+    H = Embedding(10000, nb_filtre, input_length=(884,))(x)
 
-            Hx = concatenate([H, H])
-            F = Activation('sigmoid')(Hx)
+    for i in range(int(nb_layer)):
 
-            I = Activation('sigmoid')(Hx)
-            L = Activation('tanh')(Hx)
-            IL = multiply([I, L])
+        Hx = concatenate([H, H])
+        F = Activation('sigmoid')(Hx)
 
-            C = multiply([C, F])
-            C = add([C, IL])
+        I = Activation('sigmoid')(Hx)
+        L = Activation('tanh')(Hx)
+        IL = multiply([I, L])
 
-            C = Activation('tanh')(C)
-            O = Activation('sigmoid')(Hx)
-            x = multiply([C, O])
+        C = multiply([C, F])
+        C = add([C, IL])
 
-            #nb_filtre_b = nb_filtre_b + nb_filtre
+        C = Activation('tanh')(C)
+        O = Activation('sigmoid')(Hx)
+        x = multiply([C, O])
 
-        y = Flatten()(x)
-        auxiliary_output = Dense(1, activation='sigmoid', name='output_2')(y)
+        #nb_filtre_b = nb_filtre_b + nb_filtre
 
-        test = Embedding(10000, 32, input_length=260)(input_2)
+    y = Flatten()(x)
+    auxiliary_output = Dense(1, activation='sigmoid', name='output_2')(y)
 
-        x = concatenate([x, test], axis=1)
+    test = Embedding(10000, 32, input_length=260)(input_2)
 
-        # And finally we add the main logistic regression layer
-        # main_output = Dense(1, activation='sigmoid', name='output_1')(x)
-        x = Flatten()(x)
-        main_output = Dense(260, activation='softmax', name="output_1")(x)
+    x = concatenate([x, test], axis=1)
+
+    # And finally we add the main logistic regression layer
+    # main_output = Dense(1, activation='sigmoid', name='output_1')(x)
+    x = Flatten()(x)
+    main_output = Dense(260, activation='softmax', name="output_1")(x)
 
 
-        model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output])
-        model.compile(loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'}, loss_weights={
-            'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'], optimizer=Adam(lr=float(lera)))
+    model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output])
+    model.compile(loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'}, loss_weights={
+        'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'], optimizer=Adam(lr=float(lera)))
 
-        save_dir = os.path.join(os.getcwd(), 'res_logs')
-        date = datetime.today()
-        year = date.strftime("%Y")
-        month = date.strftime("%m")
-        day = date.strftime("%d")
-        hour = date.strftime("%H")
-        minute = date.strftime("%M")
-        model_name = "{}{}{}{}{}_test" \
-            .format(year, month, day, hour, minute)
-        if not os.path.isdir(save_dir):
-            os.makedirs(save_dir)
-        filepath = os.path.join(save_dir, model_name)
-        callbacks = TensorBoard(log_dir=filepath)
+    save_dir = os.path.join(os.getcwd(), 'res_logs')
+    date = datetime.today()
+    year = date.strftime("%Y")
+    month = date.strftime("%m")
+    day = date.strftime("%d")
+    hour = date.strftime("%H")
+    minute = date.strftime("%M")
+    model_name = "{}{}{}{}{}_test" \
+        .format(year, month, day, hour, minute)
+    if not os.path.isdir(save_dir):
+        os.makedirs(save_dir)
+    filepath = os.path.join(save_dir, model_name)
+    callbacks = TensorBoard(log_dir=filepath)
 
-        model.fit([train_input1, train_input2],
-                  [train_output1, train_output2],
-                  epochs=30, batch_size=4096, callbacks=[callbacks],
-                  validation_steps=(
-                  [validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
+    model.fit([train_input1, train_input2],
+              [train_output1, train_output2],
+              epochs=30, batch_size=4096, callbacks=[callbacks],
+              validation_data=([validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
