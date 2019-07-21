@@ -65,7 +65,7 @@ if __name__ == "__main__":
             # Layer 1
             if i > 0:
                 C = Embedding(10000, nb_filtre_b, input_length=(884, nb_filtre_b, ))(x)
-                H = Embedding(10000, nb_filtre, input_length=(884, nb_filtre, ))(x)
+                H = Embedding(10000, nb_filtre, input_length=(884, nb_filtre_b, ))(x)
             else:
                 C = Embedding(10000, nb_filtre_b, input_length=(884,))(x)
                 H = Embedding(10000, nb_filtre, input_length=(884,))(x)
