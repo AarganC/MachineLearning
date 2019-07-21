@@ -64,11 +64,11 @@ if __name__ == "__main__":
             print("output_1_shape[:1] = " + str(input_1_shape[1:]))
             # Layer 1
             if i > 0:
-                C = Embedding(10000, nb_filtre_b, input_length=(input_1_shape[1:], nb_filtre_b, ))(x)
-                H = Embedding(10000, nb_filtre, input_length=(input_1_shape[1:], nb_filtre, ))(x)
+                C = Embedding(10000, nb_filtre_b, input_length=(884, nb_filtre_b, ))(x)
+                H = Embedding(10000, nb_filtre, input_length=(884, nb_filtre, ))(x)
             else:
-                C = Embedding(10000, nb_filtre_b, input_length=(input_1_shape[1:],))(x)
-                H = Embedding(10000, nb_filtre, input_length=(input_1_shape[1:],))(x)
+                C = Embedding(10000, nb_filtre_b, input_length=(884,))(x)
+                H = Embedding(10000, nb_filtre, input_length=(884,))(x)
 
             Hx = concatenate([H, H])
             F = Activation('sigmoid')(Hx)
