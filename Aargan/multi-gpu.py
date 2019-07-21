@@ -54,7 +54,6 @@ if __name__ == "__main__":
         nb_filtre_b = nb_filtre * 2
 
         x = input_1
-        y = input_2
 
         print(nb_filtre)
         print(nb_filtre_b)
@@ -83,7 +82,7 @@ if __name__ == "__main__":
         y = Flatten()(x)
         auxiliary_output = Dense(1, activation='sigmoid', name='output_2')(y)
 
-        test = Embedding(10000, 32, input_length=260)(y)
+        test = Embedding(10000, 32, input_length=260)(input_2)
 
         x = concatenate([x, test], axis=1)
 
