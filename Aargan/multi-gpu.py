@@ -60,11 +60,11 @@ if __name__ == "__main__":
         print(nb_filtre_b)
 
         for i in range(int(nb_layer)):
-            output_1_shape = train_output1.shape
-            print("output_1_shape[:1] = " + str(output_1_shape[1:]))
+            input_1_shape = train_input1.shape
+            print("output_1_shape[:1] = " + str(input_1_shape[1:]))
             # Layer 1
-            C = Embedding(10000, nb_filtre_b, input_length=output_1_shape[1:])(x)
-            H = Embedding(10000, nb_filtre, input_length=output_1_shape[1:])(x)
+            C = Embedding(10000, nb_filtre_b, input_length=input_1_shape[1:])(x)
+            H = Embedding(10000, nb_filtre, input_length=input_1_shape[1:])(x)
 
             Hx = concatenate([H, H])
             F = Activation('sigmoid')(Hx)
