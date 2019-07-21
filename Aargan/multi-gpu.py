@@ -19,19 +19,19 @@ if __name__ == "__main__":
     name_modele = "lstm"
     print("name_modele = " + name_modele)
     batch_size = 4096
-    print("batch_size = " + batch_size)
+    print("batch_size = " + str(batch_size))
     epochs = 10
-    print("epochs = " + epochs)
+    print("epochs = " + str(epochs))
     activation = "relu"
     print("activation = " + activation)
     nb_layer = 3
-    print("nb_layer = " + nb_layer)
+    print("nb_layer = " + str(nb_layer))
     nb_filtre = 16
-    print("nb_filtre = " + nb_filtre)
+    print("nb_filtre = " + str(nb_filtre))
     final_activation = "adam"
     print("final_activation = " + final_activation)
     lera = 0.001
-    print("lera = " + lera)
+    print("lera = " + str(lera))
 
     # Loading data in ram
     train_input1 = np.load("../Data/train-input_1.npy")
