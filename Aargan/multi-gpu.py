@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
 import keras
 import os
 import pandas as pd
@@ -9,7 +10,6 @@ from keras.models import Model
 from keras.callbacks import TensorBoard
 from datetime import datetime
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import tensorflow as tf
 
 if __name__ == "__main__":
