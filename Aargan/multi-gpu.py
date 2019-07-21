@@ -114,5 +114,5 @@ if __name__ == "__main__":
         model.fit([train_input1, train_input2],
                   [train_output1, train_output2],
                   epochs=30, batch_size=4096, callbacks=[callbacks],
-                  validation_data=(
+                  validation_steps=(
                   [validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
