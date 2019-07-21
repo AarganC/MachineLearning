@@ -1,13 +1,8 @@
 #!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 
 import keras
 import os
 import sys
-import pandas as pd
 import numpy as np
 import tensorflow as tf
 from keras.optimizers import SGD
@@ -18,24 +13,24 @@ from keras.callbacks import TensorBoard
 from datetime import datetime
 
 # Get param
-name_param = sys.argv[1]
-print("name_param = " + name_param)
-name_modele = sys.argv[2]
-print("name_modele = " + name_modele)
-batch_size = sys.argv[3]
-print("batch_size = " + batch_size)
-epochs = sys.argv[4]
-print("epochs = " + epochs)
-activation = sys.argv[5]
-print("activation = " + activation)
-nb_layer = sys.argv[6]
-print("nb_layer = " + nb_layer)
-nb_filtre = sys.argv[7]
-print("nb_filtre = " + nb_filtre)
-final_activation = sys.argv[8]
-print("final_activation = " + final_activation)
-lera = sys.argv[8]
-print("lera = " + lera)
+#name_param = sys.argv[1]
+#print("name_param = " + name_param)
+#name_modele = sys.argv[2]
+#print("name_modele = " + name_modele)
+#batch_size = sys.argv[3]
+#print("batch_size = " + batch_size)
+#epochs = sys.argv[4]
+#print("epochs = " + epochs)
+#activation = sys.argv[5]
+#print("activation = " + activation)
+#nb_layer = sys.argv[6]
+#print("nb_layer = " + nb_layer)
+#nb_filtre = sys.argv[7]
+#print("nb_filtre = " + nb_filtre)
+#final_activation = sys.argv[8]
+#print("final_activation = " + final_activation)
+#lera = sys.argv[8]
+#print("lera = " + lera)
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -91,15 +86,20 @@ month = date.strftime("%m")
 day = date.strftime("%d")
 hour = date.strftime("%H")
 minute = date.strftime("%M")
-model_name = "{}{}{}{}{}_{}"     .format(year, month, day, hour, minute, name_param)
+model_name = "{}{}{}{}{}_{}"     .format(year, month, day, hour, minute, "SLP")
 if not os.path.isdir(save_dir):
     os.makedirs(save_dir)
 filepath = os.path.join(save_dir, model_name)
-callbacks = TensorBoard(log_dir=filepath)
+callbacks = []
+
+callbacks.append(TensorBoard(log_dir=filepath))
+callbacks.append(callbacks.append(keras.callbacks.ModelCheckpoint('./checkpoint-{epoch}.h5')))
 
 model.fit([train_input1, train_input2],
           [train_output1, train_output2],
-          epochs=30, batch_size=4096, callbacks=[callbacks],
+          epochs=10, batch_size=4096, callbacks=[callbacks],
          validation_data=([validation_input_1, validation_input_2], [validation_output_1, validation_output_2]))
+
+model.save('model_SLP.h5')
 
 
