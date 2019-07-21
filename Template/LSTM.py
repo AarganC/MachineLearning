@@ -27,25 +27,20 @@ def LSTM (input_1, input_2, nb_filtre, nb_layer):
 
         C = Activation('tanh')(C)
         O = Activation('sigmoid')(Hx)
-        x = multiply([C, O])
+        input_1 = multiply([C, O])
 
         nb_filtre_b = nb_filtre_b + nb_filtre
 
-    y = Flatten()(x)
+    y = Flatten()(input_1)
     auxiliary_output = Dense(1, activation='sigmoid', name='output_2')(y)
 
-    test = Embedding(10000, 32, input_length=(260))(input_2)
+    test = Embedding(10000, 32, input_length=260)(input_2)
 
-    x = concatenate([x, test], axis=1)
-
-    # We stack a deep densely-connected network on top
-    x = Dense(64, activation='relu')(x)
-    x = Dense(64, activation='relu')(x)
-    x = Dense(64, activation='relu')(x)
+    x = concatenate([input_1, test], axis=1)
 
     # And finally we add the main logistic regression layer
     # main_output = Dense(1, activation='sigmoid', name='output_1')(x)
     x = Flatten()(x)
     main_output = Dense(260, activation='softmax', name="output_1")(x)
 
-    return main_output, auxiliary_output
+    model
