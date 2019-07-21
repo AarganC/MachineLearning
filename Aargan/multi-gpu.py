@@ -34,14 +34,14 @@ if __name__ == "__main__":
     print("lera = " + str(lera))
 
     # Loading data in ram
-    train_input1 = np.load("../Data/train-input_1.npy")
-    train_input2 = np.load("../Data/train-input_2.npy")
-    train_output1 = np.load("../Data/train-output_1.npy")
-    train_output2 = np.load("../Data/train-output_2.npy")
-    validation_input_1 = np.load("../Data/validation-input_1.npy")
-    validation_input_2 = np.load("../Data/validation-input_2.npy")
-    validation_output_1 = np.load("../Data/validation-output_1.npy")
-    validation_output_2 = np.load("../Data/validation-output_2.npy")
+    train_input1 = np.load("../Data/train-input_1.npy", mmap_mode="r")
+    train_input2 = np.load("../Data/train-input_2.npy", mmap_mode="r")
+    train_output1 = np.load("../Data/train-output_1.npy", mmap_mode="r")
+    train_output2 = np.load("../Data/train-output_2.npy", mmap_mode="r")
+    validation_input_1 = np.load("../Data/validation-input_1.npy", mmap_mode="r")
+    validation_input_2 = np.load("../Data/validation-input_2.npy", mmap_mode="r")
+    validation_output_1 = np.load("../Data/validation-output_1.npy", mmap_mode="r")
+    validation_output_2 = np.load("../Data/validation-output_2.npy", mmap_mode="r")
 
     # Set tensor
     input_1 = Input(shape=(884,), name="input_1")
