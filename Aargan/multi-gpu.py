@@ -92,7 +92,7 @@ if __name__ == "__main__":
         x = Flatten()(x)
         main_output = Dense(260, activation='softmax', name="output_1")(x)
 
-        opt = str(final_activation + '(float(' + lera + '))')
+        opt = final_activation + '(lr=' + float(lera) + ')'
 
         model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output])
         model.compile(loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'}, loss_weights={
