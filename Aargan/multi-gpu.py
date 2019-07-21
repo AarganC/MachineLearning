@@ -92,11 +92,10 @@ if __name__ == "__main__":
         x = Flatten()(x)
         main_output = Dense(260, activation='softmax', name="output_1")(x)
 
-        opt = final_activation + '(lr=' + float(lera) + ')'
 
         model = Model(inputs=[input_1, input_2], outputs=[main_output, auxiliary_output])
         model.compile(loss={'output_1': 'categorical_crossentropy', 'output_2': 'binary_crossentropy'}, loss_weights={
-            'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'], optimizer=opt)
+            'output_1': 1.0, 'output_2': 0.001}, metrics=['accuracy'], optimizer=final_activation(lr=float(lera)))
 
         save_dir = os.path.join(os.getcwd(), 'res_logs')
         date = datetime.today()
